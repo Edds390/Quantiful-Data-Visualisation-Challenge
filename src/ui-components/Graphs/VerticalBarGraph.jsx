@@ -17,7 +17,7 @@ const VerticalBarGraph = props => (
 
   <ResponsiveContainer
     width="95%"
-    height={500}
+    height={565}
   >
     <BarChart
       layout="vertical"
@@ -33,8 +33,6 @@ const VerticalBarGraph = props => (
       <Legend />
       {props.seriesKeys.map(seriesKey =>
         <Bar dataKey={seriesKey} key={seriesKey} stackId="a" fill={generateRandomColour()} />)}
-      {/* <Bar dataKey="pv" stackId="a" fill="#8884d8" />
-      <Bar dataKey="uv" stackId="a" fill="#82ca9d" /> */}
     </BarChart>
   </ResponsiveContainer>
 

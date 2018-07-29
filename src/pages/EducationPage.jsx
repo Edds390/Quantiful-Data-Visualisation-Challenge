@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Grid from '@material-ui/core/Grid';
 import Switch from '@material-ui/core/Switch';
 import { withRouter } from 'react-router';
 import { JSONresponeSales } from '../data';
@@ -166,26 +167,42 @@ class EducationPageRouter extends React.Component {
     );
   }
 
-  render() {
+  renderBarGraph() {
     const {
-      isLineChart,
       barData,
     } = this.state;
     return (
-      <Card>
-        {/* {isLineChart ? this.renderLineChart() : this.renderStackedAreaChart()} */}
-        <CardContent>
-          <Typography variant="display1">
-            Line Graph Displaying Sales Info
-          </Typography>
-          <VerticalBarGraph
-            data={barData}
-            seriesKeys={DATASETS}
-            xAxisLabel="Day of Week"
-            yAxisLabel="Sales"
-          />
-        </CardContent>
-      </Card>
+      <CardContent>
+        <Typography variant="display1">
+            Sales across Days of Week
+        </Typography>
+        <VerticalBarGraph
+          data={barData}
+          seriesKeys={DATASETS}
+          xAxisLabel="Day of Week"
+          yAxisLabel="Sales"
+        />
+      </CardContent>
+    );
+  }
+
+  render() {
+    const {
+      isLineChart,
+    } = this.state;
+    return (
+      <Grid container spacing={24}>
+        <Grid item xs={12} md={4}>
+          <Card>
+            {this.renderBarGraph()}
+          </Card>
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <Card>
+            {isLineChart ? this.renderLineChart() : this.renderStackedAreaChart()}
+          </Card>
+        </Grid>
+      </Grid>
     );
   }
 }

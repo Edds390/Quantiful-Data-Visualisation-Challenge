@@ -15,7 +15,7 @@ import generateRandomColour from '../../utilities/ColourGenerator';
 const LineGraph = props => (
   <ResponsiveContainer
     width="95%"
-    height={500}
+    height={600}
   >
     <LineChart
       data={props.data}
@@ -25,7 +25,8 @@ const LineGraph = props => (
     >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis
-        height={30}
+        height={60}
+        minTickGap={10}
         dataKey="date"
         type="category"
         label={{ value: props.xAxisLabel, angle: 0, position: 'bottom' }}

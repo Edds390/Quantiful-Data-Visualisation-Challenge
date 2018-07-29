@@ -5,6 +5,7 @@ import {
   ResponsiveContainer,
   AreaChart,
   Area,
+  Legend,
   Tooltip,
   XAxis,
   YAxis,
@@ -16,7 +17,7 @@ const StackedAreaGraph = props => (
 
   <ResponsiveContainer
     width="95%"
-    height={500}
+    height={600}
   >
     <AreaChart
       data={props.data}
@@ -27,12 +28,13 @@ const StackedAreaGraph = props => (
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis
         height={60}
+        minTickGap={15}
         dataKey="date"
         label={{ value: props.xAxisLabel, angle: 0, position: 'bottom' }}
       />
 
       <YAxis label={{ value: props.yAxisLabel, angle: -90, position: 'insideLeft' }} />
-
+      <Legend verticalAlign="top" />
       <Tooltip />
       {props.seriesKeys.map((seriesKey) => {
         const color = generateRandomColour();
