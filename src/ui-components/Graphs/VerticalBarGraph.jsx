@@ -30,7 +30,7 @@ const VerticalBarGraph = props => (
       <YAxis dataKey="dow" type="category" />
       <XAxis type="number" />
       <Tooltip />
-      <Legend />
+      <Legend verticalAlign="top" />
       {props.seriesKeys.map(seriesKey =>
         <Bar dataKey={seriesKey} key={seriesKey} stackId="a" fill={generateRandomColour()} />)}
     </BarChart>

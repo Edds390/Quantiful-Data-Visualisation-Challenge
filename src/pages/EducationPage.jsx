@@ -133,10 +133,16 @@ class EducationPageRouter extends React.Component {
     } = this.state;
     return (
       <CardContent>
-        <Typography variant="display1">
-          Stacked Area Graph Displaying Sales Info
-          {this.renderGraphSwitch()}
-        </Typography>
+        <Grid container spacing={24}>
+          <Grid item xs={10}>
+            <Typography variant="display1">
+              Stacked Area Graph Displaying Sales Info
+            </Typography>
+          </Grid>
+          <Grid item xs={2}>
+            {this.renderGraphSwitch()}
+          </Grid>
+        </Grid>
         <StackedAreaGraph
           data={stackData}
           seriesKeys={DATASETS}
@@ -153,10 +159,16 @@ class EducationPageRouter extends React.Component {
     } = this.state;
     return (
       <CardContent>
-        <Typography variant="display1">
-          Line Graph Displaying Sales Info
-          {this.renderGraphSwitch()}
-        </Typography>
+        <Grid container spacing={24}>
+          <Grid item xs={10}>
+            <Typography variant="display1">
+              Line Graph Displaying Sales Info
+            </Typography>
+          </Grid>
+          <Grid item xs={2}>
+            {this.renderGraphSwitch()}
+          </Grid>
+        </Grid>
         <LineGraph
           data={data}
           seriesKeys={DATASETS}
