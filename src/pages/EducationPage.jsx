@@ -191,8 +191,8 @@ class EducationPageRouter extends React.Component {
         <VerticalBarGraph
           data={barData}
           seriesKeys={DATASETS}
-          xAxisLabel="Day of Week"
-          yAxisLabel="Sales"
+          yAxisLabel="Day of Week"
+          xAxisLabel="Sales"
         />
       </CardContent>
     );

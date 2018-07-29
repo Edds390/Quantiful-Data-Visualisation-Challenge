@@ -28,7 +28,7 @@ const VerticalBarGraph = props => (
     >
       <CartesianGrid strokeDasharray="3 3" />
       <YAxis dataKey="dow" type="category" />
-      <XAxis type="number" />
+      <XAxis type="number" label={{ value: props.xAxisLabel, angle: 0, position: 'bottom' }} />
       <Tooltip />
       <Legend verticalAlign="top" />
       {props.seriesKeys.map(seriesKey =>
@@ -43,7 +43,6 @@ VerticalBarGraph.propTypes = {
     key: PropTypes.number,
   })).isRequired,
   xAxisLabel: PropTypes.string.isRequired,
-  yAxisLabel: PropTypes.string.isRequired,
   seriesKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
