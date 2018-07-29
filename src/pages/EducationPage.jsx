@@ -4,10 +4,12 @@ import Card from '@material-ui/core/Card';
 
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Switch from '@material-ui/core/Switch';
 import { withRouter } from 'react-router';
 import { JSONresponeSales } from '../data';
 import LineGraph from '../ui-components/Graphs/LineGraph';
 import StackedAreaGraph from '../ui-components/Graphs/StackedAreaGraph';
+
 
 const DATASETS = [
   'car',
@@ -22,6 +24,7 @@ class EducationPageRouter extends React.Component {
     this.state = {
       data: cleanedData,
       stackData: stackChartCleanedData,
+      isLineChart: true,
     };
   }
 
@@ -58,27 +61,73 @@ class EducationPageRouter extends React.Component {
     return cleanedData;
   }
 
-  render() {
+  handleGraphSwitch = () => {
     const {
-      data,
+      isLineChart,
+    } = this.state;
+    this.setState({ isLineChart: !isLineChart });
+  }
+
+  renderGraphSwitch() {
+    const {
+      isLineChart,
+    } = this.state;
+    return (
+      <Switch
+        color="primary"
+        value={isLineChart}
+        onChange={this.handleGraphSwitch}
+      />
+    );
+  }
+
+  renderStackedAreaChart() {
+    const {
       stackData,
     } = this.state;
-    console.log(data);
+    return (
+      <CardContent>
+        <Typography variant="display1">
+          Stacked Area Graph Displaying Sales Info
+          {this.renderGraphSwitch()}
+        </Typography>
+        <StackedAreaGraph
+          data={stackData}
+          seriesKeys={DATASETS}
+          xAxisLabel="Date"
+          yAxisLabel="Sales"
+        />
+      </CardContent>
+    );
+  }
+
+  renderLineChart() {
+    const {
+      data,
+    } = this.state;
+    return (
+      <CardContent>
+        <Typography variant="display1">
+          Line Graph Displaying Sales Info
+          {this.renderGraphSwitch()}
+        </Typography>
+        <LineGraph
+          data={data}
+          seriesKeys={DATASETS}
+          xAxisLabel="Date"
+          yAxisLabel="Sales"
+        />
+      </CardContent>
+    );
+  }
+
+  render() {
+    const {
+      isLineChart,
+    } = this.state;
     return (
       <Card>
-        <CardContent>
-          <Typography variant="display1">
-            Line Graph Displaying Sales Info
-          </Typography>
-        </CardContent>
-        <CardContent>
-          <StackedAreaGraph
-            data={stackData}
-            seriesKeys={DATASETS}
-            xAxisLabel="Date"
-            yAxisLabel="Sales"
-          />
-        </CardContent>
+        {isLineChart ? this.renderLineChart() : this.renderStackedAreaChart()}
       </Card>
     );
   }
