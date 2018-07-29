@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import { withRouter } from 'react-router';
 import { JSONresponeSales } from '../data';
 import LineGraph from '../ui-components/Graphs/LineGraph';
+import StackedAreaGraph from '../ui-components/Graphs/StackedAreaGraph';
 
 const DATASETS = [
   'car',
@@ -17,26 +18,14 @@ class EducationPageRouter extends React.Component {
   constructor(props) {
     super(props);
     const cleanedData = this.cleanData();
-    const xAxis = cleanedData.map(obs => obs.key_as_string);
+    const stackChartCleanedData = this.cleanDataForStackedChart();
     this.state = {
       data: cleanedData,
+      stackData: stackChartCleanedData,
     };
   }
 
   cleanData() {
-    // {date: "5/6/18", car: 10, phone: 35},
-    // const cleanedData = JSONresponeSales.filter(dataset => dataset.key === 'car' || dataset.key === 'phone')
-    //   .reduce((acc, current) => acc.sales_over_time.buckets.map((obs, i) => {
-    //     const curSales = current.sales_over_time.buckets[i].total_sales.value;
-    //     const curKey = current.sales_over_time.buckets[i].key_as_string;
-    //     const curObj = { date: curKey };
-    //     curObj[current.key] = curSales;
-    //     const obsSales = obs.total_sales.value;
-    //     const obsKey = obs.key_as_string;
-    //     const obsObj = { date: obsKey };
-    //     curObj[acc.key] = obsSales;
-    //     return Object.assign({}, obsObj, curObj);
-    //   }));
     const cleanedData = JSONresponeSales.filter(dataset => dataset.key === 'car' || dataset.key === 'phone')
       .map((dataset) => {
         const name = dataset.key;
@@ -53,9 +42,26 @@ class EducationPageRouter extends React.Component {
     return cleanedData;
   }
 
+  cleanDataForStackedChart() {
+    const cleanedData = JSONresponeSales.filter(dataset => dataset.key === 'car' || dataset.key === 'phone')
+      .reduce((acc, current) => acc.sales_over_time.buckets.map((obs, i) => {
+        const curSales = current.sales_over_time.buckets[i].total_sales.value;
+        const curKey = current.sales_over_time.buckets[i].key_as_string;
+        const curObj = { date: curKey };
+        curObj[current.key] = curSales;
+        const obsSales = obs.total_sales.value;
+        const obsKey = obs.key_as_string;
+        const obsObj = { date: obsKey };
+        curObj[acc.key] = obsSales;
+        return Object.assign({}, obsObj, curObj);
+      }));
+    return cleanedData;
+  }
+
   render() {
     const {
       data,
+      stackData,
     } = this.state;
     console.log(data);
     return (
@@ -66,8 +72,9 @@ class EducationPageRouter extends React.Component {
           </Typography>
         </CardContent>
         <CardContent>
-          <LineGraph
-            data={data}
+          <StackedAreaGraph
+            data={stackData}
+            seriesKeys={DATASETS}
             xAxisLabel="Date"
             yAxisLabel="Sales"
           />

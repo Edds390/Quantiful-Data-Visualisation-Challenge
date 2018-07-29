@@ -3,59 +3,59 @@ import PropTypes from 'prop-types';
 import {
   CartesianGrid,
   ResponsiveContainer,
-  LineChart,
-  Line,
-  Legend,
+  AreaChart,
+  Area,
   Tooltip,
   XAxis,
   YAxis,
 } from 'recharts';
 import generateRandomColour from '../../utilities/ColourGenerator';
 
-const LineGraph = props => (
+
+const StackedAreaGraph = props => (
+
   <ResponsiveContainer
     width="95%"
     height={500}
   >
-    <LineChart
+    <AreaChart
       data={props.data}
       margin={{
-      top: 5, right: 30, left: 20, bottom: 5,
-    }}
+        top: 10, right: 30, left: 0, bottom: 0,
+      }}
     >
       <CartesianGrid strokeDasharray="3 3" />
       <XAxis
-        height={30}
+        height={60}
         dataKey="date"
-        type="category"
         label={{ value: props.xAxisLabel, angle: 0, position: 'bottom' }}
-        allowDuplicatedCategory={false}
       />
 
-      <YAxis dataKey="sales" label={{ value: props.yAxisLabel, angle: -90, position: 'insideLeft' }} />
-      <Tooltip />
-      <Legend verticalAlign="top" />
-      {props.data.map(series =>
-        (<Line
-          type="monotone"
-          dataKey="sales"
-          data={series.data}
-          name={series.name}
-          key={series.name}
-          stroke={generateRandomColour()}
-        />))}
+      <YAxis label={{ value: props.yAxisLabel, angle: -90, position: 'insideLeft' }} />
 
-    </LineChart>
+      <Tooltip />
+      {props.seriesKeys.map((seriesKey) => {
+        const color = generateRandomColour();
+        return (<Area
+          type="monotone"
+          dataKey={seriesKey}
+          stackId="1"
+          stroke={color}
+          fill={color}
+        />);
+      })}
+    </AreaChart>
   </ResponsiveContainer>
 
 );
 
-LineGraph.propTypes = {
+StackedAreaGraph.propTypes = {
   data: PropTypes.arrayOf(PropTypes.shape({
     key: PropTypes.number,
   })).isRequired,
+  seriesKeys: PropTypes.arrayOf(PropTypes.string).isRequired,
   xAxisLabel: PropTypes.string.isRequired,
   yAxisLabel: PropTypes.string.isRequired,
 };
 
-export default LineGraph;
+export default StackedAreaGraph;
