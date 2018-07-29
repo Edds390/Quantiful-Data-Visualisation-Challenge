@@ -30,14 +30,23 @@ const LineGraph = props => (
       <XAxis
         height={30}
         dataKey="date"
+        type="category"
         label={{ value: props.xAxisLabel, angle: 0, position: 'bottom' }}
+        allowDuplicatedCategory={false}
       />
 
-      <YAxis label={{ value: props.yAxisLabel, angle: -90, position: 'insideLeft' }} />
+      <YAxis dataKey="sales" label={{ value: props.yAxisLabel, angle: -90, position: 'insideLeft' }} />
       <Tooltip />
       <Legend verticalAlign="top" />
-      {props.dataKeys.map(dataKey =>
-        <Line type="monotone" dataKey={dataKey} stroke={generateRandomColour()} />)}
+      {props.data.map(series =>
+        (<Line
+          type="monotone"
+          dataKey="sales"
+          data={series.data}
+          name={series.name}
+          key={series.name}
+          stroke={generateRandomColour()}
+        />))}
 
     </LineChart>
   </ResponsiveContainer>

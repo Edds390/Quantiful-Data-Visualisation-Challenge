@@ -20,24 +20,35 @@ class EducationPageRouter extends React.Component {
     const xAxis = cleanedData.map(obs => obs.key_as_string);
     this.state = {
       data: cleanedData,
-      dataKeys: DATASETS,
     };
   }
 
   cleanData() {
     // {date: "5/6/18", car: 10, phone: 35},
+    // const cleanedData = JSONresponeSales.filter(dataset => dataset.key === 'car' || dataset.key === 'phone')
+    //   .reduce((acc, current) => acc.sales_over_time.buckets.map((obs, i) => {
+    //     const curSales = current.sales_over_time.buckets[i].total_sales.value;
+    //     const curKey = current.sales_over_time.buckets[i].key_as_string;
+    //     const curObj = { date: curKey };
+    //     curObj[current.key] = curSales;
+    //     const obsSales = obs.total_sales.value;
+    //     const obsKey = obs.key_as_string;
+    //     const obsObj = { date: obsKey };
+    //     curObj[acc.key] = obsSales;
+    //     return Object.assign({}, obsObj, curObj);
+    //   }));
     const cleanedData = JSONresponeSales.filter(dataset => dataset.key === 'car' || dataset.key === 'phone')
-      .reduce((acc, current) => acc.sales_over_time.buckets.map((obs, i) => {
-        const curSales = current.sales_over_time.buckets[i].total_sales.value;
-        const curKey = current.sales_over_time.buckets[i].key_as_string;
-        const curObj = { date: curKey };
-        curObj[current.key] = curSales;
-        const obsSales = obs.total_sales.value;
-        const obsKey = obs.key_as_string;
-        const obsObj = { date: obsKey };
-        curObj[acc.key] = obsSales;
-        return Object.assign({}, obsObj, curObj);
-      }));
+      .map((dataset) => {
+        const name = dataset.key;
+        const data = dataset.sales_over_time.buckets.map(obs => ({
+          date: obs.key_as_string,
+          sales: obs.total_sales.value,
+        }));
+        return {
+          name,
+          data,
+        };
+      });
 
     return cleanedData;
   }
@@ -45,7 +56,6 @@ class EducationPageRouter extends React.Component {
   render() {
     const {
       data,
-      dataKeys,
     } = this.state;
     console.log(data);
     return (
@@ -58,7 +68,6 @@ class EducationPageRouter extends React.Component {
         <CardContent>
           <LineGraph
             data={data}
-            dataKeys={dataKeys}
             xAxisLabel="Date"
             yAxisLabel="Sales"
           />
